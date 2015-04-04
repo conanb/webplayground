@@ -1,2 +1,4 @@
-# NodePlayground
-Just a playground for various Node.js related things. A mix of JavaScript and CoffeeScript.
+# Web Playground
+Just a playground for various web related things.
+
+A mix of JavaScript, CoffeeScript and Node.js experiments.
