@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Noise Test 02</title>
+    <style>
+    canvas {
+      box-shadow: 0 0 10px #777;
+      margin: 10px;
+      padding: 0px;
+      width: 512px;
+      height: 512px;
+    }
+    body {
+      background-color: #eee;
+    }
+    </style>
+  </head>
+  <body>
+    <div>
+      <canvas autofocus width='512' height='512'></canvas>
+    </div>
+    <script src='noise.js'></script>
+    <script>
+      var canvas = document.getElementsByTagName('canvas')[0];
+      var context = canvas.getContext('2d');
+
+      var image = context.createImageData(canvas.width, canvas.height);
+      var pixels = image.data;
+
+      var offset = 0;
+      var ms = 0;
+
+      p3 = function(x, y, z, o, p) {
+        var total = 0;
+        var n = o - 1;
+
+        for (var i = 0 ; i <= n ; i++) {
+
+            var frequency = Math.pow( 2.0, i );
+            var amplitude = Math.pow( p, i );
+
+            total = total + perlin3(x * frequency, y * frequency, z * frequency) * amplitude;
+        }
+
+        return total;
+      }
+
+      // generate and time some noise
+      generate = function() {
+        var start = Date.now();
+        offset += 0.15;
+        var w = canvas.width - 1;
+        var h = canvas.height - 1;
+        for (var x = 0 ; x <= w ; x++) {
+          for (var y = 0 ; y <= h ; y++) {
+
+            d = 1.0 - (((x - 256) * (x - 256) + (y - 256) * (y - 256)) / (256.0 * 256.0))
+
+            n = .5 * p3( x / canvas.width, y / canvas.height, offset, 5, .75 ) + .5;
+
+            var p = n * Math.max(0, d);
+
+            var r = 0, g = 0, b = 1;
+            if (p > 0.45) {
+              r = 1; g = 1; b = 0;
+            }
+            if (p > 0.4525) {
+              r = 0; g = p; b = 0;
+            }
+
+            index = (x + y * canvas.width) * 4;
+            pixels[index + 0] = r * 255;
+            pixels[index + 1] = g * 255;
+            pixels[index + 2] = b * 255;
+            pixels[index + 3] = 255;
+          }
+        }
+        ms = Date.now() - start;
+      }
+
+      draw = function() {
+        context.putImageData(image, 0, 0);
+        context.font = '18px consolas'
+        context.fillStyle = 'white';
+        context.fillText("Island Generation", 20, 20);
+        context.fillText("R to refresh", 20, 40);
+        requestAnimationFrame(draw);
+      }
+
+      document.onkeydown = function(e) {
+        if (e.keyCode == 'R'.charCodeAt(0))
+          generate();
+      }
+
+      generate();
+      requestAnimationFrame(draw);
+    </script>
+  </body>
+</html>

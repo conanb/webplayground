@@ -16,8 +16,8 @@ generate = ->
 	h = canvas.height - 1
 	for x in [0..w]
 		for y in [0..h]
-			n = .5 * ( turbulence (perlin3 x / 16, y / 256, offset), (canvas.width/12) ) + .5
-			n = 255 * Math.pow n, 1.5
+			n = .5 * ( perlin3 x / 16, y / 256, offset ) + .5
+			n = 255 * n
 			index = (x + y * canvas.width) * 4
 			pixels[index + 0] = n
 			pixels[index + 1] = pixels[index + 2] = 0
