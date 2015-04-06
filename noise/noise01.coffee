@@ -16,10 +16,11 @@ generate = ->
 	h = canvas.height - 1
 	for x in [0..w]
 		for y in [0..h]
-			n = perlin3 x / 16, y / 128, offset
-			n = 255 * Math.pow n, 3
+			n = .5 * ( turbulence (perlin3 x / 16, y / 256, offset), (canvas.width/12) ) + .5
+			n = 255 * Math.pow n, 1.5
 			index = (x + y * canvas.width) * 4
-			pixels[index + 0] = pixels[index + 1] = pixels[index + 2] = n
+			pixels[index + 0] = n
+			pixels[index + 1] = pixels[index + 2] = 0
 			pixels[index + 3] = 255
 	ms = Date.now() - start
 

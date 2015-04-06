@@ -35,9 +35,6 @@ mix = (a, b, t) ->
 fade = (t) ->
   return t*t*t*(t*(t*6.0-15.0)+10.0)
 
-scale = (t) ->
-  return .5 * t + .5
-
 perlin3 = (x, y, z) ->
   # Find unit grid cell containing point 
   X = Math.floor x
@@ -93,4 +90,12 @@ perlin3 = (x, y, z) ->
   nxyz = mix nxy0, nxy1, w
 
   # clamp to [0,1] range
-  return scale nxyz
+  return nxyz
+
+turbulence = (n, w) ->
+  t = -.5;
+  f = 1
+  while f <= w
+    t += Math.abs(n / f)
+    f *= 2
+  return t
