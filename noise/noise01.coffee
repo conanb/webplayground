@@ -8,6 +8,16 @@ pixels = image.data
 offset = 0
 ms = 0
 
+p3 = (x, y, z, o, p) ->
+	total = 0
+	n = o - 1
+	for i in [0..n]
+		frequency = Math.pow( 2.0, i )
+		amplitude = Math.pow( p, i )
+		total = total + perlin3(x * frequency, y * frequency, z * frequency) * amplitude
+	return total
+      
+
 # generate and time some noise
 generate = ->
 	start = Date.now()

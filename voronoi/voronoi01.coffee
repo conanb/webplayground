@@ -24,7 +24,13 @@ setup = ->
 	# generate random points
 	points = []
 	for n in [0..32]
-		point = {x: 512 * Math.random(), y: 512 * Math.random(), r: 255 * Math.random() | 0, g: 255 * Math.random() | 0, b: 255 * Math.random() | 0}
+		point = {
+			x: 512 * Math.random(), 
+			y: 512 * Math.random(), 
+			r: 255 * Math.random() | 0, 
+			g: 255 * Math.random() | 0, 
+			b: 255 * Math.random() | 0
+		}
 		points.push point
 
 	# fill pixels based on closest point
