@@ -31,47 +31,28 @@ generate = ->
 		}
 		points.push point
 
-smooth = ->
-	# setup cells for randomisation
-	for point in points
-		point.count = 0
-		point.avg = {x: 0, y: 0}
-	# randomise points and assign to cells
-	randomPoints = []
-	for [0..4096]
-		p = {
-			x: canvas.width * Math.random(), 
-			y: canvas.height * Math.random()
-		}	
-		closest = 0
-		closestDist = canvas.width * canvas.height
-		for point in points
-			dist = (p.x - point.x) * (p.x - point.x) + (p.y - point.y) * (p.y - point.y)
-			if dist < closestDist
-				closestDist = dist
-				closest = point.index
-		points[closest].count += 1
-		points[closest].avg.x += p.x
-		points[closest].avg.y += p.y
-	# reposition centers
-	for point in points
-		point.x = point.avg.x / point.count
-		point.y = point.avg.y / point.count
-
 draw = ->
 	start = Date.now()
-	smooth()
 	# fill pixels based on closest point
 	w = canvas.width - 1
 	h = canvas.height - 1
 	for x in [0..w]
 		for y in [0..h]
 			point = findClosest x, y
+			point.count += 1
+			point.avg.x += x
+			point.avg.y += y
 			index = (x + y * canvas.width) * 4
 			image.data[index + 0] = point.r
 			image.data[index + 1] = point.g
 			image.data[index + 2] = point.b
 			image.data[index + 3] = 255
+	# reposition centers
+	for point in points
+		point.x = point.avg.x / point.count
+		point.y = point.avg.y / point.count
+		point.count = 0
+		point.avg = {x: 0, y: 0}
 	ms = Date.now() - start
 
 	context.putImageData image, 0, 0
