@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ThreeJS Test 01</title>
+  </head>
+  <body>
+    <script src='three.min.js'></script>
+    <script>
+    var renderer, camera, scene, material, sphere, light;
+
+    function initialise() {
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          100);
+      camera.position.z = 5;
+
+      scene = new THREE.Scene();
+      scene.add(camera);
+
+      document.body.appendChild(renderer.domElement);
+
+      material = new THREE.MeshLambertMaterial( { color: 0x9999CC } );
+
+      sphere = new THREE.Mesh( new THREE.SphereGeometry(1,16,16), material );
+      scene.add(sphere);
+
+      light = new THREE.PointLight(0xFFFFFF);
+      light.position.x = 10;
+      light.position.y = 0;
+      light.position.z = 10;
+      scene.add(light);
+    }
+
+    function draw() {
+        requestAnimationFrame(draw);
+
+        var time = Date.now() / 1000;
+        light.position.x = Math.sin( time ) * 10;
+        light.position.z = Math.cos( time ) * 10;
+        sphere.scale.x = sphere.scale.y = sphere.scale.z = Math.sin( time ) * 0.5 + 1;
+
+        renderer.render(scene, camera);
+    }
+
+    initialise();
+    draw();
+    </script>
+  </body>
+</html>
