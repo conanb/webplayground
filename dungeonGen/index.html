@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<style>
+html { height: 100%; }
+body {
+  margin: 0;
+  background-color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+canvas {
+  width: 1024px;
+  height: 768px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #555;
+}
+</style>
+<canvas></canvas>
+<script>
+var canvas = document.getElementsByTagName('canvas')[0];
+var width, height;
+canvas.width = (width = canvas.clientWidth) * devicePixelRatio;
+canvas.height = (height = canvas.clientHeight) * devicePixelRatio;
+
+var ctx = canvas.getContext('2d');
+ctx.scale(devicePixelRatio, devicePixelRatio); // For high dpi display support
+</script>
+<Script src="../lib/delaunay.js"></script>
+<script src="../lib/gaussian.js"></script>
+<script src="game.js"></script>
